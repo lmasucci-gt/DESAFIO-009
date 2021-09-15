@@ -7,6 +7,7 @@ class File{
     async read(){
         try{
             const productos = await this.fs.promises.readFile(this.file, 'utf-8');
+            console.log(JSON.parse(productos[1]))//borrar esto
             return JSON.parse(productos);
         } catch (err){
             return [];
@@ -24,6 +25,15 @@ class File{
         catch (err){
             return err;
         }
+    }
+
+    async update(id){
+        let productos = await this.read();
+        let productosParse = JSON.parse(productos);
+        const index = id -1
+        const product = productos[index];
+
+
     }
 }
 
