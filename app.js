@@ -8,7 +8,7 @@ const puerto = 8080;
 const router = express.Router();
 app.use('/api', router);
 
-app.use(express.static('public'));
+app.use(express.static('./public'));
 
 // Hago la importación de los módulos necesarios para trabajar
 const archivo = require('./productos/archivo');
@@ -42,11 +42,29 @@ router.post('/productos/guardar/', async (req, res) =>{
 })
 
 router.put('productos/actualizar/:id', async (req, res) => {
-
+    const productreq = await new Productos(req.body.title, req.body.price, req.body.thumbnail);
+    const listaProductos = await archivo.read();
+    const product = listaProductos.find( product => product.id == req.params.id);
+    const index = listaProductos.map( product => product.id).indexOf(id)
+    if(!product){
+        res.send({error: 'Producto no encontrado'});
+    } else{
+        console.log(product);
+        res.send(await archivo.update(productreq, index));
+    }
 })
 
 router.delete('productos/borrar/:id', async (req, res) => {
-    
+    const productId = await new Productos(req.body.id);
+    const listaProductos = await archivo.read();
+    const index = listaProductos.map( product => product.id).indexOf(id)
+    if(!productId){
+        res.send({error: 'Producto no encontrado'});
+    } else{
+        console.log(productId);
+        const productDelete = await archivo.delete(productId, index)
+        res.send('Se ha borrado correctamente el producto', productDelete);
+    }
 })
 
 const server = app.listen(puerto, () =>{

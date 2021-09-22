@@ -7,7 +7,6 @@ class File{
     async read(){
         try{
             const productos = await this.fs.promises.readFile(this.file, 'utf-8');
-            console.log(JSON.parse(productos[1]))//borrar esto
             return JSON.parse(productos);
         } catch (err){
             return [];
@@ -27,13 +26,30 @@ class File{
         }
     }
 
-    async update(id){
-        let productos = await this.read();
-        let productosParse = JSON.parse(productos);
-        const index = id -1
-        const product = productos[index];
+    async update(producto, index){
+        const productos = await this.read();
+        productos[index] = producto;        
+        try{
+            await this.fs.promises.writeFile(this.file, JSON.stringify(productos, null, '\t'));
+            return producto;
+        }
+        catch (err){
+            return err;
+        }
+    }
 
-
+    async delete(productId, index){
+        const productos = await this.read();
+        if (productos[index].id = productId) {
+            productos.splice(1,index)
+        }
+        try{
+            await this.fs.promises.writeFile(this.file, JSON.stringify(productos, null, '\t'));
+            return producto;
+        }
+        catch (err){
+            return err;
+        } 
     }
 }
 
