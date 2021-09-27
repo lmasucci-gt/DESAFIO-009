@@ -61,7 +61,6 @@ router.delete('/productos/borrar/:id', async (req, res) => {
     if(!id){
         res.send({error: 'Producto no encontrado'});
     } else{
-        console.log(product);
         const productDelete = await archivo.delete(product, index)
         res.send(`Se ha borrado correctamente el producto id: ${id}`);
     }
