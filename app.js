@@ -2,17 +2,19 @@
 // Variables y expresiones del servidor
 const express = require('express');
 const app = express(); 
+const path = require('path');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const puerto = 8080;
 const router = express.Router();
 app.use('/api', router);
 
-app.use(express.static('public'));
+app.use(express.static(__dirname + ('/public')));
 
 // Hago la importación de los módulos necesarios para trabajar
 const archivo = require('./productos/archivo');
 const Productos = require('./productos/productos');
+
 
 // Me devuelve un json con todos los productos, en caso contrario, devuelve un mensaje de error
 router.get('/productos/listar', async (req, res) =>{
